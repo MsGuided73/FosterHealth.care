@@ -120,26 +120,54 @@
 
         /* Hero Section */
         .hero {
-            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 50%, var(--accent-cyan) 100%);
-            color: var(--white);
-            padding: 150px 2rem 100px;
-            text-align: center;
-            margin-top: 70px;
+            background: var(--white);
+            padding: 100px 2rem 40px;
+        }
+
+        .hero-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 4rem;
+            text-align: left;
+        }
+
+        .hero-text {
+            flex: 1.2;
+        }
+
+        .hero-image {
+            flex: 1;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .hero-image img {
+            max-width: 100%;
+            height: auto;
         }
 
         .hero h1 {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            line-height: 1.2;
+            font-size: 3.2rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.1;
+            color: #0070bc;
+            font-weight: 800;
         }
 
         .hero p {
-            font-size: 1.3rem;
+            font-size: 1.4rem;
             margin-bottom: 2rem;
-            max-width: 800px;
-            margin-left: auto;
-            margin-right: auto;
-            opacity: 0.95;
+            color: var(--dark-gray);
+            line-height: 1.4;
+            max-width: 100%;
+        }
+
+        .hero-separator {
+            max-width: 1200px;
+            margin: 0 auto 40px;
+            border-bottom: 5px solid var(--primary-blue);
         }
 
         /* Section Styles */
@@ -356,10 +384,18 @@
     </header>
 
     <section class="hero">
-        <h1>Innovative Technology & AI Solutions for Healthcare</h1>
-        <p>Foster Health builds AI-driven healthcare technologies that help people and organizations better understand health information, support informed decision-making, and plan healthier futures.</p>
-        <p>Our platforms are designed to support—not replace—human expertise by transforming complex healthcare data into clear, actionable insights.</p>
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1>Innovative Technology &<br>AI Solutions for Healthcare</h1>
+                <p>Foster Health builds AI-driven healthcare technologies that help people and organizations better understand health information, support informed decision-making, and plan healthier futures.</p>
+                <p>Our platforms are designed to support—not replace—human expertise by transforming complex healthcare data into clear, actionable insights.</p>
+            </div>
+            <div class="hero-image">
+                <img src="assets/fh_asset_cellphone.png" alt="Foster Health Solution on Cellphone">
+            </div>
+        </div>
     </section>
+    <div class="hero-separator"></div>
 
     <section id="solutions">
         <h2>Our Solutions</h2>
