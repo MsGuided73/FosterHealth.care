@@ -194,50 +194,57 @@
             text-align: center;
         }
 
-        /* Solutions: stacked deck that fans out into a zigzag */
+        /* Solutions: pinned horizontal track. Vertical scroll carries the
+           cards across the screen; the centered card is full strength. */
         #solutions {
-            max-width: 1300px;
-            padding-bottom: 40px;
+            max-width: none;
+            padding: 0;
         }
 
-        .solutions-space {
-            height: var(--solutions-space, 300vh);
-        }
-
-        .solutions-home {
+        .solutions-outer {
+            height: 400vh;
             position: relative;
-            height: var(--solutions-home-h, auto);
+        }
+
+        .solutions-pin {
+            position: sticky;
+            top: var(--header-h, 112px);
+            height: calc(100vh - var(--header-h, 112px));
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background: var(--white);
+        }
+
+        .solutions-pin h2 {
+            margin-bottom: 2rem;
+            padding: 0 2rem;
+        }
+
+        .solutions-track {
+            display: flex;
+            gap: 3rem;
+            padding-left: max(2rem, calc((100vw - 1200px) / 2));
+            will-change: transform;
         }
 
         .solution-card {
-            position: absolute;
-            top: var(--top, 0);
-            left: var(--left, 0);
-            width: min(1036px, 84%);
-            min-height: 62vh;
+            flex: 0 0 min(820px, 82vw);
             display: grid;
             grid-template-columns: 1fr 1fr;
+            min-height: 56vh;
             background: var(--white);
             border-radius: 16px;
             border: 1px solid #e5e9f2;
             box-shadow: 0 24px 60px -20px rgba(30,58,138,0.28);
             overflow: hidden;
-            transform-origin: top left;
-            will-change: transform, filter;
+            transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1);
         }
 
-        .solution-card.is-settled {
-            cursor: pointer;
-            transition: box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1);
-        }
-
-        .solution-card.is-settled:focus-visible {
-            outline: 3px solid var(--accent-cyan);
-            outline-offset: 3px;
-        }
-
-        .solution-card.is-front {
-            box-shadow: 0 32px 80px -24px rgba(30,58,138,0.45);
+        .solution-card.is-far {
+            transform: scale(0.94);
+            opacity: 0.55;
         }
 
         .solution-card img {
@@ -248,7 +255,7 @@
         }
 
         .solution-card .card-body {
-            padding: 3rem;
+            padding: 2.5rem 3rem;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -279,11 +286,29 @@
             margin-top: 1rem;
         }
 
-        /* Tablet: image on top, narrower cards, same stack and fan-out */
+        .solutions-progress {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 4px;
+            background: #e5e9f2;
+        }
+
+        .solutions-progress i {
+            display: block;
+            height: 100%;
+            width: 100%;
+            background: var(--secondary-blue);
+            transform-origin: left;
+            transform: scaleX(0);
+        }
+
+        /* Tablet: image on top, narrower cards */
         @media (max-width: 1100px) and (min-width: 768px) {
             .solution-card {
+                flex-basis: min(560px, 78vw);
                 grid-template-columns: 1fr;
-                width: 82%;
                 min-height: 0;
             }
 
@@ -302,23 +327,43 @@
 
         /* Phone: a plain vertical column with depth. No pin, no animation. */
         @media (max-width: 767px) {
-            .solutions-space {
-                display: none;
+            #solutions {
+                padding: 60px 1rem;
             }
 
-            .solutions-home {
-                height: auto !important;
+            .solutions-outer {
+                height: auto;
+            }
+
+            .solutions-pin {
+                position: static;
+                height: auto;
+                overflow: visible;
+                display: block;
+            }
+
+            .solutions-pin h2 {
+                padding: 0;
+                margin-bottom: 2rem;
+            }
+
+            .solutions-track {
+                flex-direction: column;
+                gap: 2rem;
+                padding-left: 0;
+                transform: none !important;
             }
 
             .solution-card {
-                position: static;
-                width: auto;
-                min-height: 0;
+                flex: none;
                 grid-template-columns: 1fr;
-                margin-bottom: 2rem;
+                min-height: 0;
                 box-shadow: 0 24px 60px -20px rgba(30,58,138,0.35);
-                transform: none !important;
-                filter: none !important;
+            }
+
+            .solution-card.is-far {
+                transform: none;
+                opacity: 1;
             }
 
             .solution-card img {
@@ -338,16 +383,47 @@
                 font-size: 0.98rem;
                 line-height: 1.65;
             }
+
+            .solutions-progress {
+                display: none;
+            }
         }
 
         @media (prefers-reduced-motion: reduce) {
-            .solutions-space {
-                display: none;
+            .solutions-outer {
+                height: auto;
+            }
+
+            .solutions-pin {
+                position: static;
+                height: auto;
+                overflow: visible;
+                display: block;
+                padding: 60px 0;
+            }
+
+            .solutions-track {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 2rem;
+                padding: 0 2rem;
+                max-width: 1200px;
+                margin: 0 auto;
+                transform: none !important;
             }
 
             .solution-card {
-                transform: none !important;
-                filter: none !important;
+                flex: none;
+                transition: none;
+            }
+
+            .solution-card.is-far {
+                transform: none;
+                opacity: 1;
+            }
+
+            .solutions-progress {
+                display: none;
             }
         }
 
@@ -516,10 +592,11 @@
     <div class="hero-separator"></div>
 
     <section id="solutions">
-        <h2>Our Solutions</h2>
-        <div class="solutions-space" aria-hidden="true"></div>
-        <div class="solutions-home">
-            <article class="solution-card" tabindex="0">
+        <div class="solutions-outer">
+            <div class="solutions-pin">
+                <h2>Our Solutions</h2>
+                <div class="solutions-track">
+            <article class="solution-card">
                 <img src="assets/patientpic_asset.jpeg" alt="Healthcare patient reviews her personalized medical overview with family member">
                 <div class="card-body">
                     <div class="card-index">01 / 04</div>
@@ -529,7 +606,7 @@
                 </div>
             </article>
 
-            <article class="solution-card" tabindex="0">
+            <article class="solution-card">
                 <img src="assets/fh_asset_cellphone.png" alt="Provider using Foster Health app">
                 <div class="card-body">
                     <div class="card-index">02 / 04</div>
@@ -539,7 +616,7 @@
                 </div>
             </article>
 
-            <article class="solution-card" tabindex="0">
+            <article class="solution-card">
                 <img src="assets/organizations_asset.jpeg" alt="Healthcare organization team meeting">
                 <div class="card-body">
                     <div class="card-index">03 / 04</div>
@@ -549,7 +626,7 @@
                 </div>
             </article>
 
-            <article class="solution-card" tabindex="0">
+            <article class="solution-card">
                 <img src="assets/research_asset.jpg" alt="Physician reviewing treatment outcome data while patients receive care">
                 <div class="card-body">
                     <div class="card-index">04 / 04</div>
@@ -558,6 +635,9 @@
                     <p>By integrating patient-reported feedback with clinical data and outcomes, our platforms can provide researchers with greater scope, detail, and flexibility—creating a more comprehensive view of how treatments perform across different patients and populations.</p>
                 </div>
             </article>
+                </div>
+                <div class="solutions-progress" aria-hidden="true"><i></i></div>
+            </div>
         </div>
     </section>
 
@@ -608,118 +688,45 @@
         </div>
     </footer>
     <script>
-    /* Solutions cards: stack like a deck as you scroll, then fan out into a
-       left/right zigzag that is their permanent home. Phones and reduced-motion
-       users get a static layout. Transform and opacity only. */
+    /* Solutions track: the section pins and vertical scroll carries the cards
+       across the screen. Phones and reduced-motion users get a static layout.
+       Only the track's transform changes per frame. */
     (function () {
         var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         var isPhone = function () { return window.matchMedia('(max-width: 767px)').matches; };
         var header = document.querySelector('header');
-        var space = document.querySelector('.solutions-space');
-        var home = document.querySelector('.solutions-home');
+        var outer = document.querySelector('.solutions-outer');
+        var track = document.querySelector('.solutions-track');
+        var progress = document.querySelector('.solutions-progress i');
         var cards = Array.prototype.slice.call(document.querySelectorAll('.solution-card'));
-        if (!space || !home || cards.length === 0) { return; }
-
-        var STACK_TOP = 24, STACK_OFFSET = 18, OVERLAP = 0.18;
-        var homes = [], spacePx = 0, fanPx = 0, cardW = 0, contW = 0, front = -1;
+        if (!outer || !track || cards.length === 0) { return; }
 
         var clamp = function (v, a, b) { return Math.min(b, Math.max(a, v)); };
-        var easeOut = function (t) { return 1 - Math.pow(1 - t, 4); };
-        var easeInOut = function (t) { return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; };
         var headerH = function () { return header ? header.offsetHeight : 0; };
 
-        function bringToFront(i) {
-            front = i;
-            cards.forEach(function (c, k) {
-                c.classList.toggle('is-front', k === i);
-                c.style.zIndex = k === i ? 10 : 1 + k;
-            });
-        }
-        cards.forEach(function (c, i) {
-            var lift = function () { if (c.classList.contains('is-settled')) { bringToFront(i); } };
-            c.addEventListener('click', lift);
-            c.addEventListener('focus', lift);
-        });
-
-        function layout() {
-            if (isPhone() || reduce) {
-                home.style.removeProperty('--solutions-home-h');
-                cards.forEach(function (c) { c.style.removeProperty('--top'); c.style.removeProperty('--left'); });
-                if (reduce && !isPhone()) { layoutStatic(); }
-                return;
-            }
-            layoutStatic();
-            var vh = window.innerHeight - headerH();
-            fanPx = Math.round(vh * 0.7);
-            spacePx = Math.round(vh * 0.55 * cards.length) + fanPx;
-            space.style.height = spacePx + 'px';
-        }
-
-        function layoutStatic() {
-            contW = home.clientWidth;
-            cards.forEach(function (c) { c.style.removeProperty('--top'); c.style.removeProperty('--left'); });
-            cardW = cards[0].offsetWidth;
-            var top = 0;
-            homes = cards.map(function (c, i) {
-                var h = c.offsetHeight;
-                var left = i % 2 === 0 ? 0 : contW - cardW;
-                c.style.setProperty('--top', top + 'px');
-                c.style.setProperty('--left', left + 'px');
-                var entry = { top: top, left: left, h: h };
-                top += h * (1 - OVERLAP);
-                return entry;
-            });
-            var last = homes[homes.length - 1];
-            home.style.setProperty('--solutions-home-h', (last.top + last.h) + 'px');
+        function syncHeader() {
+            document.documentElement.style.setProperty('--header-h', headerH() + 'px');
         }
 
         function update() {
-            if (isPhone() || reduce || !homes.length) {
-                cards.forEach(function (c) { c.style.transform = ''; c.style.filter = ''; c.style.zIndex = ''; c.classList.remove('is-settled', 'is-front'); });
+            if (isPhone() || reduce) {
+                track.style.transform = '';
+                cards.forEach(function (c) { c.classList.remove('is-far'); });
                 return;
             }
             var hh = headerH();
-            var homeRect = home.getBoundingClientRect();
-            var endTop = hh + STACK_TOP;
-            var remaining = homeRect.top - endTop;
-            if (remaining <= 0) {
-                cards.forEach(function (c, i) {
-                    c.style.transform = ''; c.style.filter = '';
-                    c.classList.add('is-settled');
-                    c.style.zIndex = i === front ? 10 : 1 + i;
-                });
-                return;
-            }
-            if (front !== -1) { front = -1; cards.forEach(function (c) { c.classList.remove('is-front'); }); }
-            cards.forEach(function (c) { c.classList.remove('is-settled'); });
-
-            var stackPx = spacePx - fanPx;
-            var scrolled = spacePx - remaining;
-            var n = cards.length, phase = stackPx / n;
-            var enter = cards.map(function (_, i) { return clamp((scrolled - i * phase) / (phase * 0.8), 0, 1); });
-            var fan = clamp((scrolled - stackPx) / fanPx, 0, 1);
-            var ft = easeInOut(fan);
-            var stackX = homeRect.left + (contW - cardW) / 2;
-            var belowY = window.innerHeight + 40;
-
-            cards.forEach(function (card, i) {
-                var depth = 0;
-                for (var k = i + 1; k < n; k++) { depth += enter[k]; }
-                var sScale = 1 - 0.03 * depth;
-                var sx = stackX + (cardW - cardW * sScale) / 2;
-                var sy = hh + STACK_TOP + STACK_OFFSET * i;
-                var t = easeOut(enter[i]);
-                var vx = sx, vy = belowY + (sy - belowY) * t, sc = sScale, bright = 1 - 0.12 * depth;
-                var h = homes[i];
-                var homeVX = homeRect.left + h.left, homeVY = homeRect.top + h.top;
-                if (fan > 0) {
-                    var targetVX = homeVX, targetVY = endTop + h.top;
-                    vx = sx + (targetVX - sx) * ft; vy = sy + (targetVY - sy) * ft;
-                    sc = sScale + (1 - sScale) * ft; bright += (1 - bright) * ft;
-                }
-                card.style.transform = 'translate3d(' + (vx - homeVX) + 'px, ' + (vy - homeVY) + 'px, 0) scale(' + sc + ')';
-                card.style.filter = 'brightness(' + bright + ')';
-                card.style.zIndex = 1 + i;
+            var rect = outer.getBoundingClientRect();
+            var total = outer.offsetHeight - (window.innerHeight - hh);
+            var p = clamp((hh - rect.top) / total, 0, 1);
+            var padL = parseFloat(getComputedStyle(track).paddingLeft) || 0;
+            var maxShift = Math.max(0, track.scrollWidth - window.innerWidth + padL);
+            track.style.transform = 'translate3d(' + (-p * maxShift) + 'px, 0, 0)';
+            if (progress) { progress.style.transform = 'scaleX(' + p + ')'; }
+            var center = window.innerWidth / 2;
+            cards.forEach(function (c) {
+                var r = c.getBoundingClientRect();
+                var mid = r.left + r.width / 2;
+                c.classList.toggle('is-far', Math.abs(mid - center) > r.width * 0.55);
             });
         }
 
@@ -730,9 +737,9 @@
             requestAnimationFrame(function () { update(); ticking = false; });
         }
         window.addEventListener('scroll', onScroll, { passive: true });
-        window.addEventListener('resize', function () { layout(); onScroll(); });
-        window.addEventListener('load', function () { layout(); onScroll(); });
-        layout();
+        window.addEventListener('resize', function () { syncHeader(); onScroll(); });
+        window.addEventListener('load', function () { syncHeader(); onScroll(); });
+        syncHeader();
         onScroll();
     })();
     </script>
