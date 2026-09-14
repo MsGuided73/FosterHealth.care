@@ -12,10 +12,12 @@
         }
 
         :root {
-            --primary-blue: #1e3a8a;
-            --secondary-blue: #3b82f6;
-            --light-blue: #60a5fa;
-            --accent-cyan: #06b6d4;
+            --primary-blue: #214278;      /* logo navy */
+            --secondary-blue: #4190d3;    /* logo royal blue */
+            --light-blue: #4190d3;
+            --accent-cyan: #214278;
+            --blue-tint: rgba(65, 144, 211, 0.10);
+            --blue-line: rgba(33, 66, 120, 0.14);
             --dark-gray: #1f2937;
             --medium-gray: #6b7280;
             --light-gray: #f3f4f6;
@@ -189,7 +191,7 @@
             font-size: 3.5rem;
             margin-bottom: 2rem;
             line-height: 1.15;
-            color: #0070bc;
+            color: var(--secondary-blue);
             font-weight: 800;
             max-width: 550px;
         }
@@ -257,19 +259,19 @@
         .solutions-track {
             display: flex;
             gap: 3rem;
-            padding-left: max(2rem, calc((100vw - 1200px) / 2));
+            padding-left: max(2rem, calc((100vw - 1260px) / 2));
             will-change: transform;
         }
 
         .solution-card {
-            flex: 0 0 min(1036px, 86vw);
+            flex: 0 0 min(1260px, 90vw);
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            min-height: 62vh;
+            grid-template-columns: 3fr 2fr;
+            align-items: stretch;
             background: var(--white);
             border-radius: 16px;
-            border: 1px solid #e5e9f2;
-            box-shadow: 0 24px 60px -20px rgba(30,58,138,0.28);
+            border: 1px solid var(--blue-line);
+            box-shadow: 0 24px 60px -20px rgba(33,66,120,0.28);
             overflow: hidden;
             transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1);
         }
@@ -281,12 +283,14 @@
         .solution-card img {
             width: 100%;
             height: 100%;
+            aspect-ratio: 3 / 2;
             object-fit: cover;
+            object-position: center;
             display: block;
         }
 
         .solution-card .card-body {
-            padding: 3rem;
+            padding: 2.5rem 2.75rem;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -323,7 +327,7 @@
             right: 0;
             bottom: 0;
             height: 4px;
-            background: #e5e9f2;
+            background: var(--blue-line);
         }
 
         .solutions-progress i {
@@ -333,6 +337,22 @@
             background: var(--secondary-blue);
             transform-origin: left;
             transform: scaleX(0);
+        }
+
+        /* Narrow desktops: tighter copy so the 3:2 photo frame holds */
+        @media (max-width: 1400px) and (min-width: 1101px) {
+            .solution-card .card-body {
+                padding: 2rem 2.25rem;
+            }
+
+            .solution-card p {
+                font-size: 0.97rem;
+                line-height: 1.7;
+            }
+
+            .solution-card h3 {
+                font-size: 1.6rem;
+            }
         }
 
         /* Tablet: image on top, narrower cards */
@@ -389,7 +409,7 @@
                 flex: none;
                 grid-template-columns: 1fr;
                 min-height: 0;
-                box-shadow: 0 24px 60px -20px rgba(30,58,138,0.35);
+                box-shadow: 0 24px 60px -20px rgba(33,66,120,0.35);
             }
 
             .solution-card.is-far {
@@ -463,9 +483,9 @@
             max-width: 900px;
             margin: 0 auto;
             padding: 3rem 2.5rem;
-            border: 1px solid #dbe7fb;
+            border: 1px solid var(--blue-line);
             border-radius: 16px;
-            background: #eef4ff;
+            background: var(--blue-tint);
         }
 
         .about-card h2 {
