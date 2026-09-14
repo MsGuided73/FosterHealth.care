@@ -275,8 +275,7 @@
         }
 
         .solution-card.is-far {
-            transform: scale(0.94);
-            opacity: 0.55;
+            transform: scale(0.97);
         }
 
         .solution-card img {
@@ -867,11 +866,11 @@
             var maxShift = Math.max(0, track.scrollWidth - window.innerWidth + padL);
             track.style.transform = 'translate3d(' + (-p * maxShift) + 'px, 0, 0)';
             if (progress) { progress.style.transform = 'scaleX(' + p + ')'; }
-            var center = window.innerWidth / 2;
+            var vw = window.innerWidth;
             cards.forEach(function (c) {
                 var r = c.getBoundingClientRect();
-                var mid = r.left + r.width / 2;
-                c.classList.toggle('is-far', Math.abs(mid - center) > r.width * 0.55);
+                var visible = Math.max(0, Math.min(r.right, vw) - Math.max(r.left, 0)) / r.width;
+                c.classList.toggle('is-far', visible < 0.35);
             });
         }
 
