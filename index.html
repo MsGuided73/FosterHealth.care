@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Foster Health - Innovative Technology & AI Solutions for Healthcare</title>
+    <title>Foster Health - Intelligent Technology for Better Healthcare</title>
     <style>
         * {
             margin: 0;
@@ -194,33 +194,73 @@
             text-align: center;
         }
 
-        /* Solutions Grid */
-        .solutions-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 3rem;
-            margin-top: 3rem;
+        /* Solutions: stacked deck that fans out into a zigzag */
+        #solutions {
+            max-width: 1300px;
+            padding-bottom: 40px;
+        }
+
+        .solutions-space {
+            height: var(--solutions-space, 300vh);
+        }
+
+        .solutions-home {
+            position: relative;
+            height: var(--solutions-home-h, auto);
         }
 
         .solution-card {
+            position: absolute;
+            top: var(--top, 0);
+            left: var(--left, 0);
+            width: min(1036px, 84%);
+            min-height: 62vh;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
             background: var(--white);
-            padding: 2rem;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-radius: 16px;
+            border: 1px solid #e5e9f2;
+            box-shadow: 0 24px 60px -20px rgba(30,58,138,0.28);
+            overflow: hidden;
+            transform-origin: top left;
+            will-change: transform, filter;
         }
 
-        .solution-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+        .solution-card.is-settled {
+            cursor: pointer;
+            transition: box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .solution-card.is-settled:focus-visible {
+            outline: 3px solid var(--accent-cyan);
+            outline-offset: 3px;
+        }
+
+        .solution-card.is-front {
+            box-shadow: 0 32px 80px -24px rgba(30,58,138,0.45);
         }
 
         .solution-card img {
             width: 100%;
-            height: 250px;
+            height: 100%;
             object-fit: cover;
-            border-radius: 8px;
-            margin-bottom: 1.5rem;
+            display: block;
+        }
+
+        .solution-card .card-body {
+            padding: 3rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .solution-card .card-index {
+            font-variant-numeric: tabular-nums;
+            color: var(--accent-cyan);
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            font-size: 0.85rem;
+            margin-bottom: 0.75rem;
         }
 
         .solution-card h3 {
@@ -233,6 +273,82 @@
             color: var(--medium-gray);
             line-height: 1.8;
             font-size: 1.05rem;
+        }
+
+        .solution-card p + p {
+            margin-top: 1rem;
+        }
+
+        /* Tablet: image on top, narrower cards, same stack and fan-out */
+        @media (max-width: 1100px) and (min-width: 768px) {
+            .solution-card {
+                grid-template-columns: 1fr;
+                width: 82%;
+                min-height: 0;
+            }
+
+            .solution-card img {
+                height: 220px;
+            }
+
+            .solution-card .card-body {
+                padding: 1.75rem 2rem;
+            }
+
+            .solution-card p {
+                font-size: 0.98rem;
+            }
+        }
+
+        /* Phone: a plain vertical column with depth. No pin, no animation. */
+        @media (max-width: 767px) {
+            .solutions-space {
+                display: none;
+            }
+
+            .solutions-home {
+                height: auto !important;
+            }
+
+            .solution-card {
+                position: static;
+                width: auto;
+                min-height: 0;
+                grid-template-columns: 1fr;
+                margin-bottom: 2rem;
+                box-shadow: 0 24px 60px -20px rgba(30,58,138,0.35);
+                transform: none !important;
+                filter: none !important;
+            }
+
+            .solution-card img {
+                height: 220px;
+            }
+
+            .solution-card .card-body {
+                padding: 1.5rem 1.4rem;
+                justify-content: flex-start;
+            }
+
+            .solution-card h3 {
+                font-size: 1.5rem;
+            }
+
+            .solution-card p {
+                font-size: 0.98rem;
+                line-height: 1.65;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .solutions-space {
+                display: none;
+            }
+
+            .solution-card {
+                transform: none !important;
+                filter: none !important;
+            }
         }
 
         /* About Section */
@@ -366,10 +482,6 @@
             h2 {
                 font-size: 2rem;
             }
-
-            .solutions-grid {
-                grid-template-columns: 1fr;
-            }
         }
     </style>
 </head>
@@ -392,9 +504,9 @@
     <section class="hero">
         <div class="hero-content">
             <div class="hero-text">
-                <h1>Innovative Technology & AI Solutions for Healthcare</h1>
-                <p>Foster Health builds AI-driven healthcare technologies that help people and organizations better understand health information, support informed decision-making, and plan healthier futures.</p>
-                <p>Our platforms are designed to support—not replace—human expertise by transforming complex healthcare data into clear, actionable insights.</p>
+                <h1>Intelligent Technology for Better Healthcare</h1>
+                <p>Foster Health develops AI-driven healthcare technologies that transform complex health information into greater understanding, better-informed decisions, and more effective healthcare.</p>
+                <p>Our platforms are designed to support—not replace—human expertise, turning complex healthcare data into meaningful insights that help patients, providers, organizations, and researchers make better-informed decisions.</p>
             </div>
             <div class="hero-image">
                 <img src="assets/fh_asset_cellphone.png" alt="Foster Health AI Platform on Mobile">
@@ -405,27 +517,47 @@
 
     <section id="solutions">
         <h2>Our Solutions</h2>
-        <div class="solutions-grid">
-            <div class="solution-card">
+        <div class="solutions-space" aria-hidden="true"></div>
+        <div class="solutions-home">
+            <article class="solution-card" tabindex="0">
                 <img src="assets/patientpic_asset.jpeg" alt="Healthcare patient reviews her personalized medical overview with family member">
-                <h3>For Patients</h3>
-                <p>We empower patients with intelligent tools that help them better understand and engage with their health information.</p>
-                <p>From helping patients better understand medical reports and lab results to providing clarity around diagnoses, medications, and treatment options, Foster Health supports individuals in navigating healthcare with greater confidence—so they can take a more active role in their care in collaboration with their healthcare providers.</p>
-            </div>
+                <div class="card-body">
+                    <div class="card-index">01 / 04</div>
+                    <h3>For Patients</h3>
+                    <p>We empower patients with intelligent tools that make complex health information easier to understand and use.</p>
+                    <p>From interpreting medical reports and lab results to providing greater clarity around diagnoses, medications, and treatment options, Foster Health helps individuals navigate healthcare with greater confidence and take a more active role in their care—in collaboration with their healthcare providers.</p>
+                </div>
+            </article>
 
-            <div class="solution-card">
+            <article class="solution-card" tabindex="0">
                 <img src="assets/fh_asset_cellphone.png" alt="Provider using Foster Health app">
-                <h3>For Providers</h3>
-                <p>Foster Health supports physicians and healthcare professionals with AI-enabled tools that streamline workflows and support informed clinical decision-making.</p>
-                <p>By synthesizing patient data and surfacing relevant insights, our solutions help providers improve patient interactions, optimize practice operations, and deliver more informed and efficient care—without adding administrative burden.</p>
-            </div>
+                <div class="card-body">
+                    <div class="card-index">02 / 04</div>
+                    <h3>For Providers</h3>
+                    <p>Foster Health supports physicians and healthcare professionals with AI-enabled tools that streamline workflows and enhance clinical decision-making.</p>
+                    <p>By synthesizing patient data and surfacing relevant insights, our solutions help providers improve patient interactions, optimize practice operations, and deliver more efficient, informed care—without adding administrative burden.</p>
+                </div>
+            </article>
 
-            <div class="solution-card">
+            <article class="solution-card" tabindex="0">
                 <img src="assets/organizations_asset.jpeg" alt="Healthcare organization team meeting">
-                <h3>For Organizations</h3>
-                <p>We help employers, organizations, and public-sector entities better understand and manage population health.</p>
-                <p>Our AI-powered platforms provide actionable insights into workforce and community health trends—helping organizations support wellbeing initiatives, manage costs, and improve outcomes at scale.</p>
-            </div>
+                <div class="card-body">
+                    <div class="card-index">03 / 04</div>
+                    <h3>For Organizations</h3>
+                    <p>We help employers, healthcare organizations, and public-sector entities better understand and manage population health.</p>
+                    <p>Our AI-powered platforms identify meaningful patterns and trends across workforce and community health data, helping organizations develop more effective wellness initiatives, manage healthcare costs, allocate resources, and improve outcomes at scale.</p>
+                </div>
+            </article>
+
+            <article class="solution-card" tabindex="0">
+                <img src="assets/research_asset.jpg" alt="Physician reviewing treatment outcome data while patients receive care">
+                <div class="card-body">
+                    <div class="card-index">04 / 04</div>
+                    <h3>For Research and Clinical Trials</h3>
+                    <p>Foster Health develops advanced data collection and analysis platforms designed to help researchers better measure and understand the real-world effects of medications, treatments, and medical interventions.</p>
+                    <p>By integrating patient-reported feedback with clinical data and outcomes, our platforms can provide researchers with greater scope, detail, and flexibility—creating a more comprehensive view of how treatments perform across different patients and populations.</p>
+                </div>
+            </article>
         </div>
     </section>
 
@@ -433,7 +565,7 @@
         <h2>About Foster Health</h2>
         <div class="about-content">
             <p>Foster Health is a multidisciplinary team of technologists, strategists, and healthcare professionals united by a shared mission: to improve healthcare through responsible innovation.</p>
-            <p>We believe that artificial intelligence, when applied thoughtfully, can make healthcare more understandable, more efficient, and more human.</p>
+            <p>We believe artificial intelligence, when applied thoughtfully and responsibly, can make healthcare more understandable, more efficient, and ultimately more human.</p>
         </div>
     </section>
 
@@ -475,5 +607,134 @@
             © 2025 Foster Health, LLC. All rights reserved.
         </div>
     </footer>
+    <script>
+    /* Solutions cards: stack like a deck as you scroll, then fan out into a
+       left/right zigzag that is their permanent home. Phones and reduced-motion
+       users get a static layout. Transform and opacity only. */
+    (function () {
+        var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        var isPhone = function () { return window.matchMedia('(max-width: 767px)').matches; };
+        var header = document.querySelector('header');
+        var space = document.querySelector('.solutions-space');
+        var home = document.querySelector('.solutions-home');
+        var cards = Array.prototype.slice.call(document.querySelectorAll('.solution-card'));
+        if (!space || !home || cards.length === 0) { return; }
+
+        var STACK_TOP = 24, STACK_OFFSET = 18, OVERLAP = 0.18;
+        var homes = [], spacePx = 0, fanPx = 0, cardW = 0, contW = 0, front = -1;
+
+        var clamp = function (v, a, b) { return Math.min(b, Math.max(a, v)); };
+        var easeOut = function (t) { return 1 - Math.pow(1 - t, 4); };
+        var easeInOut = function (t) { return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; };
+        var headerH = function () { return header ? header.offsetHeight : 0; };
+
+        function bringToFront(i) {
+            front = i;
+            cards.forEach(function (c, k) {
+                c.classList.toggle('is-front', k === i);
+                c.style.zIndex = k === i ? 10 : 1 + k;
+            });
+        }
+        cards.forEach(function (c, i) {
+            var lift = function () { if (c.classList.contains('is-settled')) { bringToFront(i); } };
+            c.addEventListener('click', lift);
+            c.addEventListener('focus', lift);
+        });
+
+        function layout() {
+            if (isPhone() || reduce) {
+                home.style.removeProperty('--solutions-home-h');
+                cards.forEach(function (c) { c.style.removeProperty('--top'); c.style.removeProperty('--left'); });
+                if (reduce && !isPhone()) { layoutStatic(); }
+                return;
+            }
+            layoutStatic();
+            var vh = window.innerHeight - headerH();
+            fanPx = Math.round(vh * 0.7);
+            spacePx = Math.round(vh * 0.55 * cards.length) + fanPx;
+            space.style.height = spacePx + 'px';
+        }
+
+        function layoutStatic() {
+            contW = home.clientWidth;
+            cards.forEach(function (c) { c.style.removeProperty('--top'); c.style.removeProperty('--left'); });
+            cardW = cards[0].offsetWidth;
+            var top = 0;
+            homes = cards.map(function (c, i) {
+                var h = c.offsetHeight;
+                var left = i % 2 === 0 ? 0 : contW - cardW;
+                c.style.setProperty('--top', top + 'px');
+                c.style.setProperty('--left', left + 'px');
+                var entry = { top: top, left: left, h: h };
+                top += h * (1 - OVERLAP);
+                return entry;
+            });
+            var last = homes[homes.length - 1];
+            home.style.setProperty('--solutions-home-h', (last.top + last.h) + 'px');
+        }
+
+        function update() {
+            if (isPhone() || reduce || !homes.length) {
+                cards.forEach(function (c) { c.style.transform = ''; c.style.filter = ''; c.style.zIndex = ''; c.classList.remove('is-settled', 'is-front'); });
+                return;
+            }
+            var hh = headerH();
+            var homeRect = home.getBoundingClientRect();
+            var endTop = hh + STACK_TOP;
+            var remaining = homeRect.top - endTop;
+            if (remaining <= 0) {
+                cards.forEach(function (c, i) {
+                    c.style.transform = ''; c.style.filter = '';
+                    c.classList.add('is-settled');
+                    c.style.zIndex = i === front ? 10 : 1 + i;
+                });
+                return;
+            }
+            if (front !== -1) { front = -1; cards.forEach(function (c) { c.classList.remove('is-front'); }); }
+            cards.forEach(function (c) { c.classList.remove('is-settled'); });
+
+            var stackPx = spacePx - fanPx;
+            var scrolled = spacePx - remaining;
+            var n = cards.length, phase = stackPx / n;
+            var enter = cards.map(function (_, i) { return clamp((scrolled - i * phase) / (phase * 0.8), 0, 1); });
+            var fan = clamp((scrolled - stackPx) / fanPx, 0, 1);
+            var ft = easeInOut(fan);
+            var stackX = homeRect.left + (contW - cardW) / 2;
+            var belowY = window.innerHeight + 40;
+
+            cards.forEach(function (card, i) {
+                var depth = 0;
+                for (var k = i + 1; k < n; k++) { depth += enter[k]; }
+                var sScale = 1 - 0.03 * depth;
+                var sx = stackX + (cardW - cardW * sScale) / 2;
+                var sy = hh + STACK_TOP + STACK_OFFSET * i;
+                var t = easeOut(enter[i]);
+                var vx = sx, vy = belowY + (sy - belowY) * t, sc = sScale, bright = 1 - 0.12 * depth;
+                var h = homes[i];
+                var homeVX = homeRect.left + h.left, homeVY = homeRect.top + h.top;
+                if (fan > 0) {
+                    var targetVX = homeVX, targetVY = endTop + h.top;
+                    vx = sx + (targetVX - sx) * ft; vy = sy + (targetVY - sy) * ft;
+                    sc = sScale + (1 - sScale) * ft; bright += (1 - bright) * ft;
+                }
+                card.style.transform = 'translate3d(' + (vx - homeVX) + 'px, ' + (vy - homeVY) + 'px, 0) scale(' + sc + ')';
+                card.style.filter = 'brightness(' + bright + ')';
+                card.style.zIndex = 1 + i;
+            });
+        }
+
+        var ticking = false;
+        function onScroll() {
+            if (ticking) { return; }
+            ticking = true;
+            requestAnimationFrame(function () { update(); ticking = false; });
+        }
+        window.addEventListener('scroll', onScroll, { passive: true });
+        window.addEventListener('resize', function () { layout(); onScroll(); });
+        window.addEventListener('load', function () { layout(); onScroll(); });
+        layout();
+        onScroll();
+    })();
+    </script>
 </body>
 </html>
