@@ -22,6 +22,11 @@
             --white: #ffffff;
         }
 
+        html,
+        body {
+            background: var(--white);
+        }
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
@@ -184,7 +189,7 @@
         }
 
         .section-alternate {
-            background: var(--light-gray);
+            background: var(--white);
         }
 
         h2 {
@@ -427,11 +432,28 @@
             }
         }
 
-        /* About Section */
+        /* About Section: blue-outlined card on white */
+        .about-card {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 3rem 2.5rem;
+            border: 2px solid var(--primary-blue);
+            border-radius: 16px;
+            background: var(--white);
+        }
+
+        .about-card h2 {
+            margin-bottom: 1.5rem;
+        }
+
         .about-content {
-            max-width: 800px;
+            max-width: 760px;
             margin: 0 auto;
             text-align: center;
+        }
+
+        .about-content p:last-child {
+            margin-bottom: 0;
         }
 
         .about-content p {
@@ -558,6 +580,10 @@
             h2 {
                 font-size: 2rem;
             }
+
+            .about-card {
+                padding: 2rem 1.25rem;
+            }
         }
     </style>
 </head>
@@ -642,10 +668,12 @@
     </section>
 
     <section id="about" class="section-alternate">
+        <div class="about-card">
         <h2>About Foster Health</h2>
         <div class="about-content">
             <p>Foster Health is a multidisciplinary team of technologists, strategists, and healthcare professionals united by a shared mission: to improve healthcare through responsible innovation.</p>
             <p>We believe artificial intelligence, when applied thoughtfully and responsibly, can make healthcare more understandable, more efficient, and ultimately more human.</p>
+        </div>
         </div>
     </section>
 
